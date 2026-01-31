@@ -10,14 +10,19 @@ class Anggota extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+protected $table = 'anggotas';
+protected $primaryKey = 'id_anggota';
+public $incrementing = true;
+    protected $keyType = 'int';
     
-    protected $fillable = [
-        'nama',
+
+   protected $fillable = [
+        'nama_anggota',
         'alamat',
         'jeniskelamin',
         'no_hp',
         'tempat_lahir',
-        'tanggal_lahir',
+        'tgl_lahir',
         'agama'
     ];
 
@@ -37,16 +42,9 @@ class Anggota extends Authenticatable
     // =============================
     // RELASI KE TABEL ANGGOTA
     // =============================
-   protected $primaryKey = 'id_anggota';
 
-public function user()
-{
-    return $this->belongsTo(User::class, 'id_user');
-}
-
-public function peminjaman()
-{
-    return $this->hasMany(Peminjaman::class, 'id_anggota');
-}
-
+        public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

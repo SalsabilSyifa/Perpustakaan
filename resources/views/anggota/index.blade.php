@@ -1,96 +1,105 @@
 @extends('layouts.app')
 
+@section('title', 'Data Anggota')
+
 @section('content')
 
-<div class="main-wrapper main-wrapper-1">
-<div class="main-content">
-<div class="section">   
-    <div class="section-header">
-        <h1>Data Anggota</h1>
-    </div>
+<div class="card">
+    <div class="card-header">
+        <h2>👥 Data Anggota</h2>
+<a href="{{ route('anggota.create') }}" class="btn btn-add">
+        <span class="icon">＋</span>
+        <span>Tambah Anggota</span>
+    </a>    
+</div>
 
-    <div class="section-body">
+<!-- ALERT -->
+@if (session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert"
+     style="position: relative; padding-right: 40px;">
+    {{ session('success') }}
 
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4>Daftar Anggota</h4>
-                <a href="{{ route('anggota.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Tambah Anggota
-                </a>
-            </div>
+    <button type="button"
+        onclick="this.parentElement.remove()"
+        style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        ">
+        &times;
+    </button>
+</div>
+@endif
 
-            <div class="card-body">
-
-                <div class="table-responsive">
-
-                    <table class="table table-striped table-hover" id="table-anggota" style="width: 100%;">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>Jenis Kelamin</th>
-                                <th>No HP</th>
-                                <th>Tempat Lahir</th>
-                                <th>Tanggal Lahir</th>
-                                <th>Agama</th>
-                                <th class="text-center">Aksi</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($anggota as $a)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $a->nama_anggota }}</td>
-                                <td>{{ $a->alamat }}</td>
-                                <td>{{ $a->jeniskelamin }}</td>
-                                <td>{{ $a->no_hp }}</td>
-                                <td>{{ $a->tempat_lahir }}</td>
-                                <td>{{ $a->tgl_lahir }}</td>
-                                <td>{{ $a->agama }}</td>
-
-                                <td class="text-center">
-                                    <a href="{{ route('anggota.edit', $a->id_anggota) }}" 
-                                       class="btn btn-warning btn-sm mx-1">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-
-                                    <form action="{{ route('anggota.destroy', $a->id_anggota) }}"
-                                          method="POST"
-                                          style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button onclick="return confirm('Yakin ingin menghapus?')"
-                                                class="btn btn-danger btn-sm mx-1">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
+    <!-- CONTROL -->
+    <div class="table-control">
+        <div>
+            Show
+            <select id="showEntries">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+            </select>
+            entries
         </div>
 
+        <div>
+            Search:
+            <input type="text" id="searchInput" placeholder="Cari anggota...">
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+        <table class="data-table" id="anggotaTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Jenis Kelamin</th>
+                    <th>No HP</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($anggota as $a)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $a->nama_anggota }}</td>
+                    <td>{{ $a->alamat }}</td>
+                    <td>{{ $a->jeniskelamin }}</td>
+                    <td>{{ $a->no_hp }}</td>
+                    <td class="aksi">
+                        <a href="{{ route('anggota.edit', $a->id_anggota) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Hapus data?')">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+
+                @if($anggota->count() == 0)
+                <tr>
+                    <td colspan="7" style="text-align:center">
+                        Data anggota masih kosong 📭
+                    </td>
+                </tr>
+                @endif
+            </tbody>
+        </table>
     </div>
 </div>
-</div>
-</div>
+
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function(){
-        $('#table-1').DataTable();
-    });
-</script>
+<script src="{{ asset('js/table.js') }}"></script>
 @endpush
-

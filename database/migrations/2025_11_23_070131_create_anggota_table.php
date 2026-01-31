@@ -6,33 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('anggotas', function (Blueprint $table) {
+ Schema::create('anggotas', function (Blueprint $table) {
     $table->id('id_anggota');
-    $table->unsignedBigInteger('id_user');
-    $table->string('nama_anggota', 100);
-    $table->string('alamat', 100)->nullable();
-    $table->enum('jeniskelamin', ['L','P']);
-    $table->string('no_hp', 15)->nullable();
-    $table->string('tempat_lahir', 100)->nullable();
-    $table->date('tgl_lahir')->nullable();
-    $table->string('agama', 30)->nullable();
-    $table->timestamps();
 
-    $table->foreign('id_user')->references('id')->on('users');
+    $table->unsignedBigInteger('id_user')->nullable(); // ⬅️ PENTING
+
+    $table->string('nama_anggota');
+    $table->text('alamat');
+    $table->string('jeniskelamin', 20);
+    $table->string('no_hp', 15);
+    $table->string('tempat_lahir');
+    $table->date('tgl_lahir');
+    $table->string('agama', 20);
+
+    $table->timestamps();
 });
 
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('anggota');
+        Schema::dropIfExists('anggotas');
     }
 };

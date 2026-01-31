@@ -3,40 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class Buku extends Authenticatable
+class Buku extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'kode_buku',
+        'judul',
+        'penulis',
+        'penerbit',
+        'tahun_terbit',
+        'kategori_id',
+        'stock',
+        'deskripsi',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected function casts(): array
+    public function kategori()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
-    // =============================
-    // RELASI KE TABEL ANGGOTA
-    // =============================
-   protected $primaryKey = 'id_buku';
-
-public function detailBuku()
+    public function statusBuku()
 {
-    return $this->hasMany(DetailBuku::class, 'id_buku');
+    return $this->belongsTo(StatusBuku::class, 'status_ buku_id');
 }
 
 }
