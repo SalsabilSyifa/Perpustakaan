@@ -16,8 +16,9 @@ class Buku extends Model
         'penerbit',
         'tahun_terbit',
         'kategori_id',
-        'stock',
         'deskripsi',
+        'stock',
+        'status_buku_id',
     ];
 
     public function kategori()
@@ -25,9 +26,16 @@ class Buku extends Model
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
+    
     public function statusBuku()
 {
-    return $this->belongsTo(StatusBuku::class, 'status_ buku_id');
+    return $this->belongsTo(StatusBuku::class, 'status_buku_id');
 }
+
+public function items()
+{
+    return $this->hasMany(BukuItem::class);
+}
+
 
 }

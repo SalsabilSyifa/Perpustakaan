@@ -56,7 +56,13 @@
                 @endforeach
             </select>
         </div>
-
+        {{-- stock --}}
+        <div class="form-group">
+            <label>Stock</label>
+            <input type="number" name="stock"
+                   value="{{ old('stock', $buku->stock) }}"
+                   maxlength="4">
+        </div>
         {{-- Deskripsi --}}
         <div class="form-group">
             <label>Deskripsi</label>

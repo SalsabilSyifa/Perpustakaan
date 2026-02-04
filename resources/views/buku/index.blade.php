@@ -63,12 +63,11 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kode Buku</th>
                     <th>Judul Buku</th>
                     <th>Penulis</th>
                     <th>Penerbit</th>
                     <th>Tahun Terbit</th>
-                    <th>Kategori</th>
+                    <th>Stock</th>
                     <th>Deskripsi</th>
                     <th style="text-align:center">Action</th>
                 </tr>
@@ -77,16 +76,11 @@
                 @foreach ($bukus as $b)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>
-                        <span class="badge badge-code">
-                            {{ $b->kode_buku }}
-                        </span>
-                    </td>
                     <td>{{ $b->judul }}</td>
                     <td>{{ $b->penulis }}</td>
                     <td>{{ $b->penerbit ?? '-' }}</td>
                     <td>{{ $b->tahun_terbit ?? '-' }}</td>
-                    <td>{{ $b->kategori->nama_kategori ?? '-' }}</td>
+                    <td>{{ $b->stock}}</td>
                     <td>{{ $b->deskripsi }}</td>
                     <td class="aksi" style="text-align:center">
                         <a href="{{ route('buku.edit', $b->id) }}"

@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 use App\Models\StatusBuku;
 use App\Models\Buku;
+use App\Models\BukuItem;
 use Illuminate\Http\Request;
 
 class StatusBukuController extends Controller
 {
     public function index()
 {
-    $bukus = Buku::with('statusBuku')->get();
-    return view('status_buku.index', compact('bukus'));
+
+    $bukuItems = BukuItem::with(['buku', 'statusBuku'])
+            ->orderBy('id', 'desc')
+            ->get();
+
+            return view('status_buku.index', compact('bukuItems'));
 }
 
     public function create()
@@ -32,10 +37,10 @@ class StatusBukuController extends Controller
 
     public function edit($id)
 {
-    $buku = Buku::with('statusBuku')->findOrFail($id);
+    $item = BukuItem::with('buku')->findOrFail($id);
     $statuses = StatusBuku::all();
 
-    return view('status_buku.edit', compact('buku', 'statuses'));
+    return view('status_buku.edit', compact('item', 'statuses'));
 }
 
     public function update(Request $request, $id)
@@ -44,8 +49,8 @@ class StatusBukuController extends Controller
         'status_buku_id' => 'required|exists:status_bukus,id'
     ]);
 
-    $buku = Buku::findOrFail($id);
-    $buku->update([
+    $item = BukuItem::findOrFail($id);
+    $item->update([
         'status_buku_id' => $request->status_buku_id
     ]);
 

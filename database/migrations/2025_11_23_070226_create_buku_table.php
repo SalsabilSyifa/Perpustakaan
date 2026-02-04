@@ -19,8 +19,13 @@ return new class extends Migration {
                 ->constrained('kategoris')
                 ->cascadeOnDelete();
 
-            $table->integer('stock')->default(0); // nanti dipakai status buku
+            $table->integer('stock')->nullable(); 
             $table->text('deskripsi')->nullable();
+
+              $table->foreignId('status_buku_id')
+                ->nullable()
+                ->constrained('status_bukus')
+                ->nullOnDelete();
 
             $table->timestamps();
         });

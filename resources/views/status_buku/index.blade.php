@@ -6,56 +6,79 @@
         <h5 class="mb-0">Status Buku</h5>
     </div>
 
-    <div class="card-body">
-        <table class="table table-bordered table-hover align-middle">
-            <thead class="table-light">
-                <tr class="text-center">
+    <!-- CONTROL -->
+    <div class="table-control">
+        <div>
+            Show
+            <select id="showEntries">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+            </select>
+            entries
+        </div>
+
+        <div>
+            Search:
+            <input type="text" id="searchInput" placeholder="Cari Buku...">
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
                     <th width="50">No</th>
                     <th>Kode Buku</th>
                     <th>Judul Buku</th>
                     <th>Status</th>
-                    <th width="120">Aksi</th>
+                    <th style="text-align:center">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($bukus as $buku)
+                @forelse ($bukuItems as $item)
                 <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $buku->kode_buku }}</td>
-                    <td>{{ $buku->judul }}</td>
-                    <td class="text-center">
-                        @php
-                        $status = optional($buku->statusBuku)->nama_status;
-                        @endphp
+                    <td>{{ $loop->iteration }}</td>
 
-                        <span class="badge
-        @if($status == 'Tersedia') bg-success
-        @elseif($status == 'Dipinjam') bg-warning
-        @elseif($status == 'Rusak') bg-danger
-        @elseif($status == 'Hilang') bg-dark
-        @else bg-secondary
-        @endif
-    ">
-                            {{ $status ?? 'Belum Diset' }}
+                    <td>
+                        <span class="badge badge-code">
+                            {{ $item->kode_buku }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {{ $item->buku->judul ?? '-' }}
+                    </td>
+
+                    <td class="text-center">
+                        <span class="badge badge-code bg-opacity-25
+            @if($item->statusBuku?->nama_status == 'Tersedia') bg-success
+            @elseif($item->statusBuku?->nama_status == 'Dipinjam') bg-warning
+            @elseif($item->statusBuku?->nama_status == 'Rusak') bg-danger
+            @elseif($item->statusBuku?->nama_status == 'Hilang') bg-dark
+            @else bg-secondary
+            @endif
+        ">
+                            {{ $item->statusBuku->nama_status ?? 'Belum Diset' }}
                         </span>
                     </td>
 
                     <td class="text-center">
-                        <a href="{{ route('status_buku.edit', $buku->id) }}"
+                        <a href="{{ route('status_buku.edit', $item->id) }}"
                             class="btn btn-warning btn-sm">
                             Edit
                         </a>
-
                     </td>
                 </tr>
                 @empty
                 <tr>
                     <td colspan="5" class="text-center text-muted">
-                        Data buku belum tersedia
+                        Belum ada buku
                     </td>
                 </tr>
                 @endforelse
             </tbody>
+
         </table>
     </div>
 </div>
