@@ -6,6 +6,7 @@ use App\Models\Buku;
 use App\Models\Kategori;
 use App\Models\StatusBuku;
 use App\Models\BukuItem;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,10 +33,15 @@ class BukuController extends Controller
         'penulis'      => 'required',
         'kategori_id'  => 'required|exists:kategoris,id',
         'tahun_terbit' => 'nullable|digits:4',
+        'cover'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         'stock'        => 'required|integer|min:1',
         'deskripsi'    => 'nullable',
     ]);
 
+       $coverPath = null;
+    if ($request->hasFile('cover')) {
+        $coverPath = $request->file('cover')->store('covers', 'public');
+    }
     // ambil status tersedia
     $statusTersedia = StatusBuku::where('nama_status', 'Tersedia')->first();
 
@@ -60,6 +66,7 @@ class BukuController extends Controller
             'kategori_id'   => $request->kategori_id,
             'deskripsi'     => $request->deskripsi,
             'stock'         => $request->stock,
+            'cover'         => $request->cover,
             'status_buku_id'=> $statusTersedia->id,
         ]);
 
@@ -96,15 +103,28 @@ class BukuController extends Controller
             'penulis'      => 'required',
             'kategori_id'  => 'required|exists:kategoris,id',
             'tahun_terbit' => 'nullable|digits:4',
+            'cover'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'stock'        => 'required|integer|min:0',
             'deskripsi'    => 'nullable',
         ]);
+
+            $data = $request->all();
+
+    if ($request->hasFile('cover')) {
+        if ($buku->cover) {
+            Storage::disk('public')->delete($buku->cover);
+        }
+        $data['cover'] = $request->file('cover')->store('covers', 'public');
+    }
+
+    $buku->update($data);
 
         $buku->update($request->only([
             'judul',
             'penulis',
             'penerbit',
             'tahun_terbit',
+            'cover',
             'kategori_id',
             'stock',
             'deskripsi',

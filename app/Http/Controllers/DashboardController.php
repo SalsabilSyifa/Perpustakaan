@@ -12,13 +12,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        
         return view('dashboard', [
             'totalAnggota'    => Anggota::count(),
-            'totalJudulBuku' => Buku::count(),
-            'totalBuku' => BukuItem::count(),
+            'totalJudulBuku'  => Buku::count(),
+            'totalBuku'       => BukuItem::count(),
 
-            'bukuDipinjam' => BukuItem::whereHas('statusBuku', function($q) {
+            'bukuDipinjam' => BukuItem::whereHas('statusBuku', function ($q) {
                 $q->where('nama_status', 'Dipinjam');
             })->count(),
 
@@ -30,8 +29,18 @@ class DashboardController extends Controller
                 $q->where('nama_status', 'Hilang');
             })->count(),
 
+            // PREVIEW
             'anggotaPreview' => Anggota::latest()->take(5)->get(),
-            'bukuPreview' => Buku::latest()->take(5)->get(),
+            'bukuPreview'    => Buku::latest()->take(5)->get(),
+
+            // 👉 TAMBAHAN INI
+            'peminjamanPreview' => Peminjaman::with([
+                'anggota',
+                'bukuItem.buku'
+            ])
+            ->latest()
+            ->take(5)
+            ->get(),
         ]);
     }
 }

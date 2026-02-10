@@ -94,12 +94,14 @@ html, body {
     background: #4f46e5;
     color: white;
     padding: 20px;
-    min-height: 100vh;
+    height: 100vh;
     z-index: 999;
-
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-
+    position: fixed;
+    top: 0;
+    left: 0;
     transition: 0.3s ease;
 }
 
@@ -147,6 +149,8 @@ html, body {
     display: flex;
     flex-direction: column;
     background: #f4f6f9;
+    margin-left: 240px;
+    min-height: 100vh;
 }
 
 /* TOPBAR */
@@ -294,6 +298,9 @@ html, body {
     display: flex;
     justify-content: space-between;
 }
+
+
+
 
 /* BUTTONS */
 .btn-save {

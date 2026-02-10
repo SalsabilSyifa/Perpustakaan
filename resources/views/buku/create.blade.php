@@ -9,7 +9,7 @@
         <p>Isi data buku dengan lengkap</p>
     </div>
 
-    <form action="{{ route('buku.store') }}" method="POST">
+    <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-body">
@@ -18,6 +18,11 @@
                 <div class="form-group">
                     <label>Judul Buku</label>
                     <input type="text" name="judul" placeholder="Judul buku" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Cover Buku</label>
+                    <input type="file" name="cover" placeholder="Cover buku" required>
                 </div>
 
                 <div class="form-group">
@@ -66,5 +71,5 @@
             </div>
         </div>
     </form>
-</div>
+</div> 
 @endsection

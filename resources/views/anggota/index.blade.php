@@ -75,7 +75,7 @@
                     <td>{{ $a->jeniskelamin }}</td>
                     <td>{{ $a->no_hp }}</td>
                     <td class="aksi">
-                        <a href="{{ route('anggota.edit', $a->id_anggota) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ route('anggota.edit', $a->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="" method="POST">
                             @csrf
                             @method('DELETE')

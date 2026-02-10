@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\StatusBukuController;
 
 Route::get('/', [DashboardController::class, 'index'])
@@ -45,3 +46,12 @@ Route::get('/', [DashboardController::class, 'index'])
 
     Route::resource('status_buku', StatusBukuController::class);
 
+    Route::resource('peminjaman', PeminjamanController::class);
+    
+    Route::post('peminjaman/{id}/kembali', [PeminjamanController::class, 'returnBook'])
+    ->name('peminjaman.kembali');
+
+    Route::get('/laporan/peminjaman', [PeminjamanController::class, 'laporan'])
+    ->name('laporan.peminjaman');
+
+    

@@ -11,12 +11,15 @@
         @csrf
         @method('PUT')
 
-        {{-- Judul --}}
+        {{-- cover --}}
         <div class="form-group">
-            <label>Judul Buku</label>
-            <input type="text" name="judul"
-                   value="{{ old('judul', $buku->judul) }}"
+            <label>Cover Buku</label>
+            <input type="file" name="cover"
+                   value="{{ old('cover', $buku->cover) }}"
                    required>
+                       @if($buku->cover)
+        <img src="{{ asset('storage/' . $buku->cover) }}" width="80" class="mt-2">
+    @endif
         </div>
 
         {{-- Penulis --}}

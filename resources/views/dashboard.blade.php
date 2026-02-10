@@ -90,7 +90,7 @@
                         @forelse ($anggotaPreview as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->nama_anggota }}</td>
                             <td>{{ $item->no_hp }}</td>
                         </tr>
                         @empty
@@ -144,6 +144,62 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-12">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">🔍 Review Peminjaman Terbaru</h5>
+            <a href="{{ route('peminjaman.index') }}" class="btn btn-sm btn-warning">
+                Lihat Semua
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Peminjam</th>
+                        <th>Buku</th>
+                        <th>Tgl Pinjam</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($peminjamanPreview as $p)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $p->anggota->nama_anggota }}</td>
+                        <td>
+                            {{ $p->bukuItem->buku->judul }} <br>
+                            <small class="text-muted">
+                                {{ $p->bukuItem->kode_buku }}
+                            </small>
+                        </td>
+                        <td>{{ \Carbon\Carbon::parse($p->tanggal_pinjam)->format('d/m/Y') }}</td>
+                        <td>
+                            @if($p->status == 'dipinjam')
+                                <span class="badge bg-warning">Dipinjam</span>
+                            @elseif($p->status == 'dikembalikan')
+                                <span class="badge bg-success">Dikembalikan</span>
+                            @else
+                                <span class="badge bg-danger">Terlambat</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            Belum ada peminjaman
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 </div>
 </div>
 

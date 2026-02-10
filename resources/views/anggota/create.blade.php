@@ -42,7 +42,7 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            < div class="form-group">
                 <label>Agama</label>
                 <select name="agama">
                     <option value="">-- Pilih --</option>
@@ -53,7 +53,7 @@
                     <option value="Hindu">Hindu</option>
                     <option value="Konghucu">Konghucu</option>
                 </select>
-            </div>
+            </>
 
             <div class="form-group">
                 <label>Alamat</label>

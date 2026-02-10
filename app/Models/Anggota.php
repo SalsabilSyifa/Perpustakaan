@@ -10,9 +10,8 @@ class Anggota extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-protected $table = 'anggotas';
-protected $primaryKey = 'id_anggota';
-public $incrementing = true;
+    protected $table = 'anggotas';
+    public $incrementing = true;
     protected $keyType = 'int';
     
 
@@ -42,6 +41,12 @@ public $incrementing = true;
     // =============================
     // RELASI KE TABEL ANGGOTA
     // =============================
+
+    public function peminjamans()
+{
+    return $this->hasMany(Peminjaman::class);
+}
+
 
         public function user()
     {

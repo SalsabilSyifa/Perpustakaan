@@ -18,9 +18,8 @@ public function index(Request $request)
             $query->where('nama_anggota', 'like', "%$search%")
                   ->orWhere('no_hp', 'like', "%$search%");
         })
-        ->orderBy('id_anggota', 'desc')
-        ->paginate(10)
-        ->withQueryString();
+        ->orderBy('id', 'desc')
+        ->get();
 
     return view('anggota.index', compact('anggota', 'search'));
 }

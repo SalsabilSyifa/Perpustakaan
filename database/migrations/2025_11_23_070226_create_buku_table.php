@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->string('penulis', 100);
             $table->string('penerbit', 100)->nullable();
             $table->year('tahun_terbit')->nullable();
-
+            $table->string('cover')->nullable();
+            
             $table->foreignId('kategori_id')
                 ->constrained('kategoris')
                 ->cascadeOnDelete();

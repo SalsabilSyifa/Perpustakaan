@@ -37,10 +37,17 @@
         📘 Status Buku
     </a>
 
-        <a href=""
-           class="">
+        <a href="{{ route('peminjaman.index') }}"
+           class=" request()->routeIs('peminjaman.*') ? 'active' : '' }}">
             🔄 Peminjaman
         </a>
+
+    <a href="{{ route('laporan.peminjaman') }}" 
+        class="nav-link">
+        📄 Laporan Peminjaman
+    </a>
+
+
         </ul>
     </aside>
 
