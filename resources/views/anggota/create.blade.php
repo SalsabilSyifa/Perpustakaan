@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="card form-card">
-    <div class="card-header form-header">
+<div class="form-card">
+    <div class="form-header">
         <h2>➕ Tambah Anggota</h2>
         <p>Lengkapi data anggota dengan benar</p>
     </div>
@@ -12,6 +12,14 @@
         @csrf
 
         <div class="form-grid">
+            <div class="form-group">
+                <label>Email Login</label>
+                <input type="email" name="email" class="form-control" placeholder="Masukkan email"required>
+            </div>
+    <div class="form-group">
+    <label>Password Login</label>
+    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+</div>
             <div class="form-group">
                 <label>Nama Lengkap</label>
                 <input type="text" name="nama_anggota" placeholder="Masukkan nama" required>
@@ -42,7 +50,7 @@
                 </select>
             </div>
 
-            < div class="form-group">
+            <div class="form-group">
                 <label>Agama</label>
                 <select name="agama">
                     <option value="">-- Pilih --</option>
@@ -53,7 +61,7 @@
                     <option value="Hindu">Hindu</option>
                     <option value="Konghucu">Konghucu</option>
                 </select>
-            </>
+            </div>
 
             <div class="form-group">
                 <label>Alamat</label>
@@ -62,8 +70,8 @@
         </div>
 
         <div class="form-action">
-            <a href="{{ route('anggota.index') }}" class="btn btn-back">Kembali</a>
-            <button type="submit" class="btn btn-save">💾 Simpan Data</button>
+            <a href="{{ route('anggota.index') }}" class="btn-back">Kembali</a>
+            <button type="submit" class="btn-save">💾 Simpan Data</button>
         </div>
     </form>
 </div>

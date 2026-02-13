@@ -1,0 +1,66 @@
+body {
+    background-color: #f5f6f8;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Layout */
+.wrapper {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background: white;
+    padding: 25px;
+    border-right: 1px solid #eee;
+}
+
+.logo {
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin-bottom: 15px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    color: #ff6b35;
+}
+
+/* Main */
+.main-content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* Card Buku */
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}

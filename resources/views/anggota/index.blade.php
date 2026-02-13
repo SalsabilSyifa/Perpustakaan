@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         <h2>👥 Data Anggota</h2>
-<a href="{{ route('anggota.create') }}" class="btn btn-add">
+<a href="{{ route('anggota.create') }}" class="btn-add">
         <span class="icon">＋</span>
         <span>Tambah Anggota</span>
     </a>    

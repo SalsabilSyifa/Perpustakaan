@@ -37,7 +37,7 @@
 
                 <div class="form-group">
                     <label>Tahun Terbit</label>
-                    <input type="year" name="tahun_terbit" placeholder="2024">
+                    <input type="number" name="tahun_terbit" placeholder="2024">
                 </div>
 
                 <div class="form-group">
@@ -54,7 +54,7 @@
 
                 <div class="form-group">
                     <label>Stok Buku</label>
-                    <input type="number" name="stock" min="0" value="0" required>
+                    <input type="number" name="stock" min="1" value="1" required>
                 </div>
 
                 <div class="form-group full">

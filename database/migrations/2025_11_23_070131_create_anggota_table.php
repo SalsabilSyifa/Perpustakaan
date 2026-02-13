@@ -11,8 +11,8 @@ return new class extends Migration
  Schema::create('anggotas', function (Blueprint $table) {
     $table->id();
 
-    $table->unsignedBigInteger('id_user')->nullable(); // ⬅️ PENTING
-
+$table->unsignedBigInteger('user_id')->nullable();
+  
     $table->string('nama_anggota');
     $table->text('alamat');
     $table->string('jeniskelamin', 20);

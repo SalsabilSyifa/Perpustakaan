@@ -7,7 +7,7 @@
 <div class="card form-card">
     <h2>✏️ Edit Buku</h2>
 
-    <form action="{{ route('buku.update', $buku->id) }}" method="POST">
+    <form action="{{ route('buku.update', $buku->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -16,11 +16,19 @@
             <label>Cover Buku</label>
             <input type="file" name="cover"
                    value="{{ old('cover', $buku->cover) }}"
-                   required>
+                   >
                        @if($buku->cover)
         <img src="{{ asset('storage/' . $buku->cover) }}" width="80" class="mt-2">
     @endif
         </div>
+
+        <div class="form-group">
+    <label>Judul</label>
+    <input type="text" name="judul"
+           value="{{ old('judul', $buku->judul) }}"
+           required>
+</div>
+
 
         {{-- Penulis --}}
         <div class="form-group">

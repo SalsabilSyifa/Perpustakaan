@@ -3,6 +3,10 @@
 @section('content')
 <div class="card">
     <h4 class="mb-3">Laporan Peminjaman Buku</h4>
+    <a href="{{ route('laporan.peminjaman.excel') }}"
+   class="btn btn-success mb-3">
+   📊 Export Excel
+</a>
 
     <div class="table-wrapper">
         <table class="data-table">
@@ -16,6 +20,7 @@
                     <th>Jatuh Tempo</th>
                     <th>Tgl Kembali</th>
                     <th>Status</th>
+                    <th>Denda</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,8 +39,20 @@
                             ($p->status == 'terlambat' ? 'danger' : 'success') 
                         }}">
                             {{ ucfirst($p->status) }}
+
+                            
                         </span>
                     </td>
+                    <td>
+    @if($p->denda > 0)
+        <span class="text-danger fw-bold">
+            Rp {{ number_format($p->denda, 0, ',', '.') }}
+        </span>
+    @else
+        -
+    @endif
+</td>
+
                 </tr>
                 @endforeach
             </tbody>

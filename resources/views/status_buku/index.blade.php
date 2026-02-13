@@ -41,7 +41,7 @@
                     <td>{{ $loop->iteration }}</td>
 
                     <td>
-                        <span class="badge badge-code">
+                        <span class="badge bg-dark text-white bg-opacity-25">
                             {{ $item->kode_buku }}
                         </span>
                     </td>

@@ -130,4 +130,9 @@ public function returnBook($id)
         ->with('success', 'Buku berhasil dikembalikan');
 }
 
+public function exportExcel()
+{
+    return "Export Excel belum dibuat 😄";
+}
+
 }

@@ -49,7 +49,7 @@ class BukuController extends Controller
         return back()->withErrors('Status "Tersedia" belum ada');
     }
 
-    DB::transaction(function () use ($request, $statusTersedia) {
+    DB::transaction(function () use ($request, $statusTersedia, $coverPath) {
 
         // generate kode buku
         $last = Buku::latest()->first();
@@ -66,7 +66,7 @@ class BukuController extends Controller
             'kategori_id'   => $request->kategori_id,
             'deskripsi'     => $request->deskripsi,
             'stock'         => $request->stock,
-            'cover'         => $request->cover,
+            'cover'         => $coverPath,
             'status_buku_id'=> $statusTersedia->id,
         ]);
 
@@ -85,8 +85,6 @@ class BukuController extends Controller
 }
 
 
-
-
     public function edit($id)
     {
         $buku = Buku::findOrFail($id);
@@ -94,21 +92,30 @@ class BukuController extends Controller
         return view('buku.edit', compact('buku', 'kategoris'));
     }
 
+
     public function update(Request $request, $id)
-    {
-        $buku = Buku::findOrFail($id);
+{
+    $buku = Buku::findOrFail($id);
 
-        $request->validate([
-            'judul'        => 'required',
-            'penulis'      => 'required',
-            'kategori_id'  => 'required|exists:kategoris,id',
-            'tahun_terbit' => 'nullable|digits:4',
-            'cover'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'stock'        => 'required|integer|min:0',
-            'deskripsi'    => 'nullable',
-        ]);
+    $request->validate([
+        'judul'        => 'required',
+        'penulis'      => 'required',
+        'kategori_id'  => 'required|exists:kategoris,id',
+        'tahun_terbit' => 'nullable|digits:4',
+        'cover'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'stock'        => 'required|integer|min:0',
+        'deskripsi'    => 'nullable',
+    ]);
 
-            $data = $request->all();
+    $data = $request->only([
+        'judul',
+        'penulis',
+        'penerbit',
+        'tahun_terbit',
+        'kategori_id',
+        'stock',
+        'deskripsi'
+    ]);
 
     if ($request->hasFile('cover')) {
         if ($buku->cover) {
@@ -117,22 +124,43 @@ class BukuController extends Controller
         $data['cover'] = $request->file('cover')->store('covers', 'public');
     }
 
+    // ✅ UPDATE HARUS DI SINI
     $buku->update($data);
 
-        $buku->update($request->only([
-            'judul',
-            'penulis',
-            'penerbit',
-            'tahun_terbit',
-            'cover',
-            'kategori_id',
-            'stock',
-            'deskripsi',
-        ]));
+    // hitung jumlah item sekarang
+$currentItems = BukuItem::where('buku_id', $buku->id)->count();
+$newStock = (int) $request->stock;
 
-        return redirect()->route('buku.index')
-            ->with('success', 'Buku berhasil diperbarui');
+$statusTersedia = StatusBuku::where('nama_status', 'Tersedia')->first();
+
+
+// kalau stock bertambah
+if ($newStock > $currentItems) {
+
+    for ($i = $currentItems + 1; $i <= $newStock; $i++) {
+        BukuItem::create([
+            'buku_id' => $buku->id,
+            'kode_buku' => $buku->kode_buku . '-' . str_pad($i, 3, '0', STR_PAD_LEFT),
+            'status_buku_id' => $statusTersedia->id,
+        ]);
     }
+
+}
+
+// kalau stock berkurang
+if ($newStock < $currentItems) {
+
+    $buku->items()
+        ->orderBy('id', 'desc')
+        ->take($currentItems - $newStock)
+        ->delete();
+}
+
+
+    return redirect()->route('buku.index')
+        ->with('success', 'Buku berhasil diperbarui');
+}
+
 
     public function destroy($id)
     {

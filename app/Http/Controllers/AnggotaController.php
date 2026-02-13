@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class AnggotaController extends Controller
 {
@@ -35,32 +38,39 @@ public function index(Request $request)
     // ======================
     // SIMPAN DATA
     // ======================
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama_anggota'  => 'required',
-            'alamat'        => 'required',
-            'jeniskelamin'  => 'required',
-            'no_hp'         => 'required',
-            'tempat_lahir'  => 'required',
-            'tgl_lahir'     => 'required|date',
-            'agama'         => 'required',
-        ]);
 
-        Anggota::create([
-            'nama_anggota' => $request->nama_anggota,
-            'alamat'       => $request->alamat,
-            'jeniskelamin' => $request->jeniskelamin,
-            'no_hp'        => $request->no_hp,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tgl_lahir'    => $request->tgl_lahir,
-            'agama'        => $request->agama,
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'nama_anggota' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+    ]);
 
-        return redirect()
-            ->route('anggota.index')
-            ->with('success', 'Anggota berhasil ditambahkan');
-    }
+    // 1️⃣ Buat akun user dulu
+    $user = User::create([
+        'name' => $request->nama_anggota,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'anggota'
+    ]);
+
+    // 2️⃣ Buat data anggota
+    Anggota::create([
+        'user_id'      => $user->id,
+        'nama_anggota' => $request->nama_anggota,
+        'alamat'       => $request->alamat,
+        'jeniskelamin' => $request->jeniskelamin,
+        'no_hp'        => $request->no_hp,
+        'tempat_lahir' => $request->tempat_lahir,
+        'tgl_lahir'    => $request->tgl_lahir,
+        'agama'        => $request->agama,
+    ]);
+
+    return redirect()->route('anggota.index')
+        ->with('success', 'Anggota & akun login berhasil dibuat');
+}
+
 
     // ======================
     // FORM EDIT
